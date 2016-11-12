@@ -5,22 +5,29 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_height="wrap_content"
-    android:layout_margin="5dip"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="5dp"
     android:elevation="3dp"
-    card_view:cardCornerRadius="3dip">
+    card_view:cardCornerRadius="0dip">
 
     <LinearLayout
+        android:background="#FFFFFF"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:layout_gravity="center"
             android:id="@+id/my_cefups_image"
-            android:layout_width="120dp"
-            android:layout_height="150dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center"
             android:id="@+id/my_cefups_txt_view"
-            android:textColor="#004D40"
+            android:textColor="@color/fontColor"
             android:text="MXU Productions"
+            android:textSize="9dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

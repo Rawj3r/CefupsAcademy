@@ -67,7 +67,22 @@
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
             </LinearLayout>
 
+
+
         </LinearLayout>
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+        </LinearLayout>
+
     </LinearLayout>
+
 
 </FrameLayout>

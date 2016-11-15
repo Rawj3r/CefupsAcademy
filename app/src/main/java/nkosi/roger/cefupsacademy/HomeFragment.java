@@ -3,6 +3,9 @@ package nkosi.roger.cefupsacademy;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -25,6 +28,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private List<MyCefups> persons;
+    private FragmentPagerAdapter adapter;
+    private ViewPager pager;
+    private FragmentManager manager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,28 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        manager = getChildFragmentManager();
+        pager = (ViewPager)view.findViewById(R.id.view_pager);
+
+        adapter = new MyPagerAdapter(manager);
+
+        final ArrayList<Fragment> list = new ArrayList<>();
+        list.add(new RecentActivities());
+        list.add(new NewsPager());
+        list.add(new TestFragment());
+
+        pager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return list.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return list.size();
+            }
+        });
 
         mRecyclerView = (RecyclerView)view.findViewById(R.id.my_cefups);
         mLinearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -72,6 +100,8 @@ public class HomeFragment extends Fragment {
         persons.add(new MyCefups("My Schedule", R.drawable.ic_date_range ));
         persons.add(new MyCefups("My Account", R.drawable.ic_account_box));
         persons.add(new MyCefups("Announcements", R.drawable.ic_announcement));
+        persons.add(new MyCefups("discussions", R.drawable.ic_record_voice_over));
+        persons.add(new MyCefups("School Events", R.drawable.ic_event));
     }
 
     public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CefupsViewHolder>{
@@ -167,6 +197,47 @@ public class HomeFragment extends Fragment {
                 textView = (TextView)itemView.findViewById(R.id.my_cefups_txt_view);
                 imageView = (ImageView)itemView.findViewById(R.id.my_cefups_image);
             }
+        }
+    }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+
+        private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        /**
+         * Return the Fragment associated with a specified position.
+         *
+         * @param position
+         */
+        @Override
+        public Fragment getItem(int position) {
+           return null;
+        }
+
+        /**
+         * Return the number of views available.
+         */
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        /**
+         * This method may be called by the ViewPager to obtain a title string
+         * to describe the specified page. This method may return null
+         * indicating no title for this page. The default implementation returns
+         * null.
+         *
+         * @param position The position of the title requested
+         * @return A title for the requested page
+         */
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return super.getPageTitle(position);
         }
     }
 

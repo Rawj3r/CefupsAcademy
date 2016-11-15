@@ -2,14 +2,18 @@ package nkosi.roger.cefupsacademy;
 
 
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -20,9 +24,8 @@ public class Home extends AppCompatActivity {
     private AHBottomNavigationItem home, profile, settings;
     private AHBottomNavigation bottomNavigation;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         bottomNavigation = (AHBottomNavigation)findViewById(R.id.bottom_navigation);

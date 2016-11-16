@@ -20,4 +20,8 @@ public interface API {
     @FormUrlEncoded
     @POST("/index.php")
     void getSlides(@FieldMap Map<String, String> map, Callback<String> callback);
+
+    @FormUrlEncoded
+    @POST("/index.php")
+    void getProfiles(@FieldMap Map<String, String> map, Callback<String> callback);
 }

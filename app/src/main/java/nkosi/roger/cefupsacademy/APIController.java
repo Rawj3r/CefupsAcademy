@@ -20,9 +20,15 @@ public class APIController {
     private HomeCallBackListener listener;
     private JSONObject object = new JSONObject();
     private JSONArray ja;
+    private StudentsCallBackListener studentsCallBackListener;
 
     public APIController(HomeCallBackListener listener) {
         this.listener = listener;
+        restApiManager = new RestApiManager();
+    }
+
+    public APIController(StudentsCallBackListener studentsCallBackListener){
+        this.studentsCallBackListener = studentsCallBackListener;
         restApiManager = new RestApiManager();
     }
 
@@ -64,11 +70,55 @@ public class APIController {
 
     }
 
+    public void fetchUsers(){
+
+        HashMap <String, String> map = new HashMap<>();
+        map.put("method", "getUsers");
+        restApiManager.getHomeAPi().getProfiles(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.e(TAG, "JSON :: " + s);
+                try {
+                    JSONArray array = new JSONArray(s);
+                    for (int i = 0; i < array.length(); i++){
+                        JSONObject jsonObject = array.getJSONObject(i);
+
+                        StudentModel model = new StudentModel.StudentBuilder()
+                                .setppName(jsonObject.getString("firstName") +" " + jsonObject.getString("lastName"))
+                                .setppPrice(jsonObject.getString("bio"))
+                                .setpID(jsonObject.getInt("usersID"))
+                                .setppImg(jsonObject.getString("uri"))
+                                .buildProduct();
+                        studentsCallBackListener.onFetchProgress(model);
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                studentsCallBackListener.onFetchComplete();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "Error :: " + error.getMessage());
+                studentsCallBackListener.onFetchComplete();
+            }
+        });
+
+    }
+
 
     public interface HomeCallBackListener{
         void onFetchStart();
         void onFetchProgress(PostModel model);
         void onFetchProgress(List<PostModel> modelList);
+        void onFetchComplete();
+        void onFetchFailed();
+    }
+
+    public interface StudentsCallBackListener{
+        void onFetchStart();
+        void onFetchProgress(StudentModel model);
+        void onFetchProgress(List<StudentModel> models);
         void onFetchComplete();
         void onFetchFailed();
     }

@@ -47,6 +47,27 @@ public class Home extends AppCompatActivity {
         bottomNavigation.setAccentColor(Color.parseColor("#B2D7D2"));
         bottomNavigation.setInactiveColor(Color.parseColor("#747474"));
         bottomNavigation.setCurrentItem(0);
+
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(int position, boolean wasSelected) {
+                switch (position){
+                    case 0:
+                        FragmentManager manager1 =  getSupportFragmentManager();
+                        FragmentTransaction transaction1 = manager1.beginTransaction();
+                        transaction1.replace(R.id.frame, new HomeFragment());
+                        transaction1.commit();
+                        break;
+                    case 1:
+                        FragmentManager manager =  getSupportFragmentManager();
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.replace(R.id.frame, new ProfileFragment());
+                        transaction.commit();
+                        break;
+
+                }
+            }
+        });
     }
 
 

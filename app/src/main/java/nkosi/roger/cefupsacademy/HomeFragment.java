@@ -51,8 +51,7 @@ public class HomeFragment extends Fragment {
 
         final ArrayList<Fragment> list = new ArrayList<>();
         list.add(new RecentActivities());
-        list.add(new NewsPager());
-        list.add(new TestFragment());
+        list.add(new Students());
 
         pager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override

@@ -7,10 +7,16 @@
     android:layout_height="match_parent"
     tools:context="nkosi.roger.cefupsacademy.NewsPager">
 
-   <TextView
-       android:text=""
+   <LinearLayout
+       android:gravity="center"
        android:layout_width="match_parent"
-       android:layout_height="match_parent" />
+       android:layout_height="300dp">
+      <ImageView
+          android:layout_gravity="center"
+          android:src="@drawable/icon_news"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
 
+   </LinearLayout>
 
 </LinearLayout>

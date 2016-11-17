@@ -1,5 +1,6 @@
 package nkosi.roger.cefupsacademy;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +101,7 @@ public class HomeFragment extends Fragment {
         persons.add(new MyCefups("My Schedule", R.drawable.ic_date_range ));
         persons.add(new MyCefups("My Account", R.drawable.ic_account_box));
         persons.add(new MyCefups("Announcements", R.drawable.ic_announcement));
-        persons.add(new MyCefups("discussions", R.drawable.ic_record_voice_over));
+        persons.add(new MyCefups("Discussions", R.drawable.ic_record_voice_over));
         persons.add(new MyCefups("School Events", R.drawable.ic_event));
     }
 
@@ -158,9 +160,30 @@ public class HomeFragment extends Fragment {
          * @param position The position of the item within the adapter's data set.
          */
         @Override
-        public void onBindViewHolder(CefupsViewHolder holder, int position) {
+        public void onBindViewHolder(CefupsViewHolder holder, final int position) {
             holder.textView.setText(list.get(position).name);
             holder.imageView.setImageResource(list.get(position).photoId);
+            holder.view.setSelected(persons.contains(position));
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (position){
+                        case Constants.discussions:
+                            startActivity(new Intent(getContext(), DiscusionsActivity.class));
+                            break;
+
+                        case Constants.schedule:
+                            startActivity(new Intent(getContext(), MyScheduleActivity.class));
+                            break;
+
+
+                        default:
+                            return;
+
+                    }
+                }
+            });
+
         }
 
         /**
@@ -190,11 +213,13 @@ public class HomeFragment extends Fragment {
 
             TextView textView;
             ImageView imageView;
+            View view;
 
             public CefupsViewHolder(View itemView) {
                 super(itemView);
-                textView = (TextView)itemView.findViewById(R.id.my_cefups_txt_view);
-                imageView = (ImageView)itemView.findViewById(R.id.my_cefups_image);
+                view = itemView;
+                textView = (TextView)view.findViewById(R.id.my_cefups_txt_view);
+                imageView = (ImageView)view.findViewById(R.id.my_cefups_image);
             }
         }
     }

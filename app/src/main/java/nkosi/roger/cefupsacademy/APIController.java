@@ -18,8 +18,7 @@ public class APIController {
     private final String TAG = APIController.class.getSimpleName();
     private RestApiManager restApiManager;
     private HomeCallBackListener listener;
-    private JSONObject object = new JSONObject();
-    private JSONArray ja;
+    private TaskCallBackListener taskCallBackListener;
     private StudentsCallBackListener studentsCallBackListener;
 
     public APIController(HomeCallBackListener listener) {
@@ -31,6 +30,13 @@ public class APIController {
         this.studentsCallBackListener = studentsCallBackListener;
         restApiManager = new RestApiManager();
     }
+
+    public APIController(TaskCallBackListener taskCallBackListener){
+        this.taskCallBackListener = taskCallBackListener;
+        restApiManager = new RestApiManager();
+    }
+
+
 
     public void fetchPosts(){
 
@@ -45,7 +51,6 @@ public class APIController {
                     for (int i = 0; i < array.length(); i++){
                         JSONObject jsonObject = array.getJSONObject(i);
 
-                        Constants.object1 = jsonObject;
 
                         PostModel model = new PostModel.PBuilder()
                                 .setBody(jsonObject.getString("post"))
@@ -68,6 +73,44 @@ public class APIController {
             }
         });
 
+    }
+
+    public void fetchTasks(){
+        HashMap <String, String> map = new HashMap<>();
+        map.put("method", "getAllTasks");
+        map.put("userID", "2");
+
+        restApiManager.getHomeAPi().getTasks(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.e(TAG, "JSON :: " + s);
+
+                try {
+                    JSONArray array = new JSONArray(s);
+                    for (int i = 0; i < array.length(); i++){
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        TaskModel model = new TaskModel.TaskBuilder()
+                                .setContent(jsonObject.getString("content"))
+                                .setDateAdded(jsonObject.getString("dateAdded"))
+                                .setId(jsonObject.getString("idSchedule"))
+                                .setImageUri(jsonObject.getString("firstName")
+                                        + " " + jsonObject.getString("secondName")
+                                        + " " + jsonObject.getString("lastName") )
+                                .buildTask();
+                        taskCallBackListener.onFetchProgress(model);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                taskCallBackListener.onFetchComplete();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.e(TAG, "Error :: " + error.getMessage());
+                taskCallBackListener.onFetchComplete();
+            }
+        });
     }
 
     public void fetchUsers(){
@@ -119,6 +162,14 @@ public class APIController {
         void onFetchStart();
         void onFetchProgress(StudentModel model);
         void onFetchProgress(List<StudentModel> models);
+        void onFetchComplete();
+        void onFetchFailed();
+    }
+
+    public interface TaskCallBackListener{
+        void onFetchStart();
+        void onFetchProgress(TaskModel model);
+        void onFetchProgress(List<TaskModel> models);
         void onFetchComplete();
         void onFetchFailed();
     }

@@ -1,10 +1,11 @@
 package nkosi.roger.cefupsacademy;
 
 import android.app.ProgressDialog;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -25,13 +26,12 @@ public class ProfileFragment extends Fragment {
     private CircleImageView profilePic;
     private TextView profileName, profileBio, profileGrade, profileDream,
             profilePlace, profileDateOfBirth, profileEmail, profileContactNum;
+    private Typeface typeface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
+        typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/arial.ttf");
     }
 
     @Override
@@ -51,6 +51,8 @@ public class ProfileFragment extends Fragment {
         profileDateOfBirth = (TextView)view.findViewById(R.id.date_of_birth);
         profileEmail = (TextView)view.findViewById(R.id.profile_email);
         profileContactNum = (TextView)view.findViewById(R.id.profile_contact_no);
+
+
 
         return view;
     }
@@ -88,6 +90,7 @@ public class ProfileFragment extends Fragment {
          * @see #doInBackground
          * @see #onCancelled(Object)
          */
+
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             super.onPostExecute(jsonObject);
@@ -159,12 +162,12 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void run() {
                     profileName.setText(fname);
-                    profileContactNum.setText(fnum);
-                    profileEmail.setText(femail);
-                    profileDateOfBirth.setText(fdob);
-                    profilePlace.setText(fplace);
-                    profileGrade.setText(fgrade);
-                    profileDream.setText(fdream);
+                    profileContactNum.setText("Contact nos: " +fnum);
+                    profileEmail.setText("Email: " + femail);
+                    profileDateOfBirth.setText("Date of Birth: " + fdob);
+                    profilePlace.setText("Lives in: " + fplace);
+                    profileGrade.setText("Doing grade: " + fgrade);
+                    profileDream.setText("Dreams of: " + fdream);
                     profileBio.setText(fbio);
 
                     Picasso.with(getContext()).load(Constants.BASE_URL + "/images/" + fphotoUri).into(profilePic);

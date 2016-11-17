@@ -1,54 +1,52 @@
 package nkosi.roger.cefupsacademy;
 
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class RecentActivities extends Fragment implements APIController.HomeCallBackListener{
+public class MyScheduleActivity extends AppCompatActivity implements APIController.TaskCallBackListener{
 
     private APIController controller;
     private RecyclerView recyclerView;
-    private PostsAdapter adapter;
-    private List<PostModel> list =  new ArrayList<>();
+
+    private TaskAdapter adapter;
+    private List<TaskModel> modelList = new ArrayList<>();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_schedule);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         controller = new APIController(this);
-        controller.fetchPosts();
+        controller.fetchTasks();
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recent_activities, container, false);
-
-        recyclerView = (RecyclerView)view.findViewById(R.id.posts);
+        recyclerView = (RecyclerView)findViewById(R.id.task);
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
 
-        adapter = new PostsAdapter(list);
+        adapter = new TaskAdapter(modelList);
         recyclerView.setAdapter(adapter);
 
-        return view;
+
     }
 
     @Override
@@ -57,12 +55,12 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
     }
 
     @Override
-    public void onFetchProgress(PostModel model) {
+    public void onFetchProgress(TaskModel model) {
         adapter.populate(model);
     }
 
     @Override
-    public void onFetchProgress(List<PostModel> modelList) {
+    public void onFetchProgress(List<TaskModel> models) {
 
     }
 
@@ -72,22 +70,28 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        return true;
+    }
+
+    @Override
     public void onFetchFailed() {
 
     }
 
+    public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.Holder>{
 
-    private class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.Holder>{
-        public String TAG = RecentActivities.class.getSimpleName();
-        private List<PostModel> postModels;
+        private List<TaskModel> modelList;
 
-        public PostsAdapter(List<PostModel> contactsModels) {
-            this.postModels = contactsModels;
+        public TaskAdapter(List<TaskModel> modelList) {
+            this.modelList = modelList;
         }
 
-        public void populate(PostModel model){
-            postModels.add(model);
+        public void populate(TaskModel model){
+            modelList.add(model);
             notifyDataSetChanged();
+
         }
 
         /**
@@ -112,7 +116,7 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
          */
         @Override
         public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_single_post,parent, false);
+            View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, parent, false);
             return new Holder(row);
         }
 
@@ -138,21 +142,9 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
          */
         @Override
         public void onBindViewHolder(Holder holder, int position) {
-            final PostModel model = this.postModels.get(position);
-            holder.body.setText(model.body);
-            holder.subject.setText(model.subject);
-            holder.date.setText(model.datedAdded);
-
-            holder.parentView.setSelected(list.contains(position));
-            holder.parentView.setOnClickListener(new View.OnClickListener() {
-                String id = model.id;
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity().getApplicationContext(), SinglePost.class);
-                    intent.putExtra("id", id);
-                    startActivityForResult(intent,1);
-                }
-            });
+            final TaskModel model = this.modelList.get(position);
+            holder.content.setText(model.content);
+            holder.dateAdded.setText(model.datedAdded);
         }
 
         /**
@@ -162,22 +154,22 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
          */
         @Override
         public int getItemCount() {
-            return postModels.size();
+            return modelList.size();
         }
 
         public class Holder extends RecyclerView.ViewHolder{
-            public TextView subject, body, date;
+
+            public TextView content, dateAdded;
             public View parentView;
+            public ImageView imageView;
 
             public Holder(View itemView) {
                 super(itemView);
                 this.parentView = itemView;
-                subject = (TextView)itemView.findViewById(R.id.subject);
-                body = (TextView)itemView.findViewById(R.id.body);
-                date = (TextView)itemView.findViewById(R.id.date);
+                content = (TextView)parentView.findViewById(R.id.task_content);
+                imageView = (ImageView)parentView.findViewById(R.id.task_image);
+                dateAdded = (TextView)parentView.findViewById(R.id.content_date);
             }
         }
     }
-
-
 }

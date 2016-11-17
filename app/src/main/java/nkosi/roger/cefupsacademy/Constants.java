@@ -1,13 +1,20 @@
 package nkosi.roger.cefupsacademy;
 
-import org.json.JSONObject;
+
 
 /**
- * Created by lulu on 10/22/2016.
+ * Created by roger on 10/22/2016.
  */
 
 public class Constants {
-    public static String URL = "http://devwiggle.co.za/cefups/";
-    public static String BASE_URL = "http://devwiggle.co.za/cefups";
-    public static JSONObject object1 = new JSONObject();
+    public final static String URL = "http://devwiggle.co.za/cefups/";
+    public final static String BASE_URL = "http://devwiggle.co.za/cefups";
+
+    public final static int assignments = 0;
+    public final static int classTest = 1;
+    public final static int schedule = 2;
+    public static int myAccount = 3;
+    public final static int announcements = 4;
+    public final static int discussions = 5;
+    public final static int events = 5;
 }

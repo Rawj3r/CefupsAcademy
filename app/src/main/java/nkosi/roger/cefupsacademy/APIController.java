@@ -54,9 +54,10 @@ public class APIController {
 
                         PostModel model = new PostModel.PBuilder()
                                 .setBody(jsonObject.getString("post"))
-                                .setSubject(jsonObject.getString("heading"))
+                                .setSubject(jsonObject.getString("uri"))
                                 .setID(jsonObject.getString("postID"))
                                 .setDateAdded(jsonObject.getString("dateAdded"))
+                                .setName(jsonObject.getString("firstName")+ " " +jsonObject.getString("lastName"))
                                 .buiuld();
                         listener.onFetchProgress(model);
                     }

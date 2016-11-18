@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        card_view:cardBackgroundColor="@color/lightgrey"
+        card_view:cardBackgroundColor="@color/white"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,10 +29,10 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="56dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_height="56dp"
                     android:src="@drawable/ic_account_box"
-                    app:civ_border_width="2dp"
                     app:civ_border_color="@color/white"/>
 
             </LinearLayout>
@@ -44,14 +44,16 @@
                 android:layout_height="80dp">
 
                 <TextView
-                    android:textColor="#000"
+                    android:textColor="@color/fontColor"
                     android:id="@+id/c_name"
+                    android:textSize="17dp"
                     android:text="Cappuccino"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:textColor="#757575"
+                    android:textSize="15dp"
+                    android:textColor="@color/secondaryFontColor"
                     android:id="@+id/c_intro"
                     android:text="Grade 10 c"
                     android:layout_marginTop="0dip"

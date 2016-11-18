@@ -9,9 +9,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +81,6 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
 
     }
 
-
     private class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.Holder>{
         public String TAG = RecentActivities.class.getSimpleName();
         private List<PostModel> postModels;
@@ -140,8 +144,9 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
         public void onBindViewHolder(Holder holder, int position) {
             final PostModel model = this.postModels.get(position);
             holder.body.setText(model.body);
-            holder.subject.setText(model.subject);
+            holder.name.setText(model.name);
             holder.date.setText(model.datedAdded);
+            Picasso.with(holder.itemView.getContext()).load(Constants.BASE_URL + "/images/" + model.subject).into(holder.imageView);
 
             holder.parentView.setSelected(list.contains(position));
             holder.parentView.setOnClickListener(new View.OnClickListener() {
@@ -166,13 +171,15 @@ public class RecentActivities extends Fragment implements APIController.HomeCall
         }
 
         public class Holder extends RecyclerView.ViewHolder{
-            public TextView subject, body, date;
+            public TextView name, body, date;
+            public ImageView imageView;
             public View parentView;
 
             public Holder(View itemView) {
                 super(itemView);
                 this.parentView = itemView;
-                subject = (TextView)itemView.findViewById(R.id.subject);
+                imageView = (ImageView)itemView.findViewById(R.id.post_image);
+                name = (TextView)itemView.findViewById(R.id.poster_name);
                 body = (TextView)itemView.findViewById(R.id.body);
                 date = (TextView)itemView.findViewById(R.id.date);
             }

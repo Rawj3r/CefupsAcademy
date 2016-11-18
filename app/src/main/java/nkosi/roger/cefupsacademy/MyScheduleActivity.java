@@ -33,7 +33,7 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
     private TaskAdapter adapter;
     private List<TaskModel> modelList = new ArrayList<>();
 
-    private TextView content, dateAdded;
+    private TextView tcontent, tdateAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +42,8 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        content = (TextView)findViewById(R.id.app_bar_task_content);
-        dateAdded = (TextView)findViewById(R.id.app_bar_task_date);
+        tcontent = (TextView)findViewById(R.id.app_bar_task_content);
+        tdateAdded = (TextView)findViewById(R.id.app_bar_task_date);
 
         controller = new APIController(this);
         controller.fetchTasks();
@@ -241,6 +241,11 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
 
                 JSONObject jsonObject = jsonParser.makeHttpRequest(Constants.URL, "POST", map);
 
+                String d = "Created on: " + jsonObject.getString("dateAdded");
+                String c = jsonObject.getString("content");
+
+                getData(c,d);
+
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -251,6 +256,13 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
         public void getData(String content, String dateAdded){
             final String c = content;
             final String d = dateAdded;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tcontent.setText(c);
+                    tdateAdded.setText(d);
+                }
+            });
         }
     }
 }

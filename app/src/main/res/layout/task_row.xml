@@ -46,7 +46,6 @@
                 <TextView
                     android:id="@+id/task_content"
                     android:textColor="@color/fontColor"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

@@ -27,7 +27,7 @@
             android:id="@+id/my_cefups_txt_view"
             android:textColor="@color/fontColor"
             android:text="MXU Productions"
-            android:textSize="9dp"
+            android:textSize="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

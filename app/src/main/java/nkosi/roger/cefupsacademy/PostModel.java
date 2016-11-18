@@ -5,7 +5,7 @@ package nkosi.roger.cefupsacademy;
  */
 
 public class PostModel {
-    String subject, body, id, datedAdded;
+    String subject, body, id, datedAdded, name;
 
 
     public PostModel(PBuilder builder) {
@@ -13,10 +13,16 @@ public class PostModel {
         this.subject = builder.subject;
         this.id = builder.id;
         this.datedAdded = builder.datedAdded;
+        this.name = builder.name;
     }
 
     public static class PBuilder{
-        String subject, body, id, datedAdded;
+        String subject, body, id, datedAdded, name;
+
+        public PBuilder setName(String s){
+            this.name = s;
+            return PBuilder.this;
+        }
 
         public PBuilder setDateAdded(String dateAdded){
             this.datedAdded = dateAdded;

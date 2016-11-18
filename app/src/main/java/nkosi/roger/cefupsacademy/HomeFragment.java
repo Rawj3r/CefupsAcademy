@@ -4,14 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,7 +42,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -45,6 +50,11 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Toolbar toolbar = (Toolbar)view.findViewById(R.id.toolbar);
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
         manager = getChildFragmentManager();
         pager = (ViewPager)view.findViewById(R.id.view_pager);
@@ -89,6 +99,12 @@ public class HomeFragment extends Fragment {
             this.name = name;
             this.photoId = photoId;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+
     }
 
     // This method creates an ArrayList that has three Person objects
@@ -176,6 +192,8 @@ public class HomeFragment extends Fragment {
                             startActivity(new Intent(getContext(), MyScheduleActivity.class));
                             break;
 
+                        case Constants.assignments:
+                            startActivity(new Intent(getContext(), AssignmentsActivity.class));
 
                         default:
                             return;

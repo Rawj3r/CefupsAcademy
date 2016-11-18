@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -11,12 +12,20 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
-public class AssignmentsActivity extends AppCompatActivity {
+public class AssignmentsActivity extends AppCompatActivity implements APIController.SubjectSCallBackListener{
 
     private TextView tsubject, taverage, tcass;
+
+    private APIController controller;
+    private RecyclerView recyclerView;
+
+
+    private List<TaskModel> modelList = new ArrayList<>();
 
     private Runner runner;
 
@@ -24,6 +33,9 @@ public class AssignmentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
+
+        controller = new APIController(this);
+//        controller.fetchSubjects();
 
         tsubject = (TextView)findViewById(R.id.app_bar_subject);
         taverage = (TextView)findViewById(R.id.app_bar_assignments_average);
@@ -37,6 +49,31 @@ public class AssignmentsActivity extends AppCompatActivity {
 
 
         new GetTask().execute();
+
+    }
+
+    @Override
+    public void onFetchStart() {
+
+    }
+
+    @Override
+    public void onFetchProgress(TaskModel model) {
+
+    }
+
+    @Override
+    public void onFetchProgress(List<TaskModel> models) {
+
+    }
+
+    @Override
+    public void onFetchComplete() {
+
+    }
+
+    @Override
+    public void onFetchFailed() {
 
     }
 

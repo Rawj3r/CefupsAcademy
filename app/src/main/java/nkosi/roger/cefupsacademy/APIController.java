@@ -20,6 +20,12 @@ public class APIController {
     private HomeCallBackListener listener;
     private TaskCallBackListener taskCallBackListener;
     private StudentsCallBackListener studentsCallBackListener;
+    private SubjectSCallBackListener subjectSCallBackListener;
+
+    public APIController(SubjectSCallBackListener subjectSCallBackListener) {
+        this.subjectSCallBackListener = subjectSCallBackListener;
+        restApiManager = new RestApiManager();
+    }
 
     public APIController(HomeCallBackListener listener) {
         this.listener = listener;
@@ -114,6 +120,36 @@ public class APIController {
         });
     }
 
+    public void fetchSubjects(){
+        HashMap <String, String> map = new HashMap<>();
+        map.put("method", "getStudentSubjects");
+        restApiManager.getHomeAPi().getSubjects(map, new Callback<String>() {
+            @Override
+            public void success(String s, Response response) {
+                Log.e(TAG, "JSON :: " + s);
+                try {
+                    JSONArray array = new JSONArray(s);
+                    for (int i = 0; i < array.length(); i++){
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        TaskModel model = new TaskModel.SubjectsBuilder()
+                                .setID(jsonObject.getString("idSubjects"))
+                                .setName(jsonObject.getString("subjectName"))
+                                .buildSub();
+                        subjectSCallBackListener.onFetchProgress(model);
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                studentsCallBackListener.onFetchComplete();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                studentsCallBackListener.onFetchComplete();
+            }
+        });
+    }
+
     public void fetchUsers(){
 
         HashMap <String, String> map = new HashMap<>();
@@ -168,6 +204,14 @@ public class APIController {
     }
 
     public interface TaskCallBackListener{
+        void onFetchStart();
+        void onFetchProgress(TaskModel model);
+        void onFetchProgress(List<TaskModel> models);
+        void onFetchComplete();
+        void onFetchFailed();
+    }
+
+    public interface SubjectSCallBackListener{
         void onFetchStart();
         void onFetchProgress(TaskModel model);
         void onFetchProgress(List<TaskModel> models);

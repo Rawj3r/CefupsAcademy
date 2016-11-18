@@ -1,5 +1,7 @@
 package nkosi.roger.cefupsacademy;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +19,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MyScheduleActivity extends AppCompatActivity implements APIController.TaskCallBackListener{
@@ -27,12 +33,17 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
     private TaskAdapter adapter;
     private List<TaskModel> modelList = new ArrayList<>();
 
+    private TextView content, dateAdded;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_schedule);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        content = (TextView)findViewById(R.id.app_bar_task_content);
+        dateAdded = (TextView)findViewById(R.id.app_bar_task_date);
 
         controller = new APIController(this);
         controller.fetchTasks();
@@ -46,7 +57,7 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
         adapter = new TaskAdapter(modelList);
         recyclerView.setAdapter(adapter);
 
-
+        new GetTask().execute();
     }
 
     @Override
@@ -170,6 +181,76 @@ public class MyScheduleActivity extends AppCompatActivity implements APIControll
                 imageView = (ImageView)parentView.findViewById(R.id.task_image);
                 dateAdded = (TextView)parentView.findViewById(R.id.content_date);
             }
+        }
+    }
+
+    class GetTask extends AsyncTask<String, String, JSONObject>{
+
+        JSONParser jsonParser = new JSONParser();
+        ProgressDialog progressDialog;
+
+
+        /**
+         * Runs on the UI thread before {@link #doInBackground}.
+         *
+         * @see #onPostExecute
+         * @see #doInBackground
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * <p>Runs on the UI thread after {@link #doInBackground}. The
+         * specified result is the value returned by {@link #doInBackground}.</p>
+         * <p>
+         * <p>This method won't be invoked if the task was cancelled.</p>
+         *
+         * @param jsonObject The result of the operation computed by {@link #doInBackground}.
+         * @see #onPreExecute
+         * @see #doInBackground
+         * @see #onCancelled(Object)
+         */
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            super.onPostExecute(jsonObject);
+
+        }
+
+        /**
+         * Override this method to perform a computation on a background thread. The
+         * specified parameters are the parameters passed to {@link #execute}
+         * by the caller of this task.
+         * <p>
+         * This method can call {@link #publishProgress} to publish updates
+         * on the UI thread.
+         *
+         * @param params The parameters of the task.
+         * @return A result, defined by the subclass of this task.
+         * @see #onPreExecute()
+         * @see #onPostExecute
+         * @see #publishProgress
+         */
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            try{
+                HashMap<String, String> map = new HashMap<>();
+                map.put("method", "getSingleTask");
+                map.put("userID", "2");
+
+                JSONObject jsonObject = jsonParser.makeHttpRequest(Constants.URL, "POST", map);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public void getData(String content, String dateAdded){
+            final String c = content;
+            final String d = dateAdded;
         }
     }
 }

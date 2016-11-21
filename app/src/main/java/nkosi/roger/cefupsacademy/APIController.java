@@ -123,6 +123,7 @@ public class APIController {
     public void fetchSubjects(){
         HashMap <String, String> map = new HashMap<>();
         map.put("method", "getStudentSubjects");
+        map.put("userID", "2");
         restApiManager.getHomeAPi().getSubjects(map, new Callback<String>() {
             @Override
             public void success(String s, Response response) {
@@ -131,7 +132,7 @@ public class APIController {
                     JSONArray array = new JSONArray(s);
                     for (int i = 0; i < array.length(); i++){
                         JSONObject jsonObject = array.getJSONObject(i);
-                        TaskModel model = new TaskModel.SubjectsBuilder()
+                        SubjectModel model = new SubjectModel.SubjectsBuilder()
                                 .setID(jsonObject.getString("idSubjects"))
                                 .setName(jsonObject.getString("subjectName"))
                                 .buildSub();
@@ -140,7 +141,7 @@ public class APIController {
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
-                studentsCallBackListener.onFetchComplete();
+//                studentsCallBackListener.onFetchComplete();
             }
 
             @Override
@@ -174,7 +175,11 @@ public class APIController {
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
-                studentsCallBackListener.onFetchComplete();
+                try {
+                    studentsCallBackListener.onFetchComplete();
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -213,8 +218,8 @@ public class APIController {
 
     public interface SubjectSCallBackListener{
         void onFetchStart();
-        void onFetchProgress(TaskModel model);
-        void onFetchProgress(List<TaskModel> models);
+        void onFetchProgress(SubjectModel model);
+        void onFetchProgress(List<SubjectModel> modelList);
         void onFetchComplete();
         void onFetchFailed();
     }

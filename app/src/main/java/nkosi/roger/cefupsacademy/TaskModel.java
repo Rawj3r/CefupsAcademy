@@ -17,32 +17,12 @@ public class TaskModel {
         this.datedAdded = builder.datedAdded;
     }
 
-    public TaskModel(AssignmentBuidler buidler){
-        subject = buidler.subject;
-        marks = buidler.marks;
-    }
+//    public TaskModel(AssignmentBuidler buidler){
+//        subject = buidler.subject;
+//        marks = buidler.marks;
+//    }
 
-    public TaskModel(SubjectsBuilder subjectsBuilder){
-        this.subjectID = subjectsBuilder.id;
-        this.studentSubject = subjectsBuilder.name;
-    }
 
-    public static class SubjectsBuilder{
-        String name, id;
-        public SubjectsBuilder setName(String name){
-            this.name = name;
-            return SubjectsBuilder.this;
-        }
-
-        public SubjectsBuilder setID(String id){
-            this.id = id;
-            return SubjectsBuilder.this;
-        }
-
-        public TaskModel buildSub(){
-            return new TaskModel(SubjectsBuilder.this);
-        }
-    }
 
     public static class AssignmentBuidler{
         String subject, marks;
@@ -56,9 +36,9 @@ public class TaskModel {
             return AssignmentBuidler.this;
         }
 
-        public TaskModel buildAss(){
-            return new TaskModel(AssignmentBuidler.this);
-        }
+//        public TaskModel buildAss(){
+//            return new TaskModel(AssignmentBuidler.this);
+//        }
     }
 
 
